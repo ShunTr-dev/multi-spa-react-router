@@ -2,7 +2,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import Home from './pages/Home'
 import Events, { loader as eventsLoader } from './pages/Events/Events'
 import EventDetail, { loader as eventDetailLoader } from './pages/Events/EventDetail'
-import NewEvent from './pages/Events/NewEvent'
+import NewEvent, { action as newEventAction } from './pages/Events/NewEvent'
 import EditEvent from './pages/Events/EditEvent'
 import RootLayout from './pages/RootLayout'
 import EventsRootLayout from './pages/Events/EventsRootLayout'
@@ -34,7 +34,7 @@ const router = createBrowserRouter([
                         ],
                     },
 
-                    { path: 'new', element: <NewEvent /> },
+                    { path: 'new', element: <NewEvent />, action: newEventAction },
                 ],
             },
         ],
