@@ -2,7 +2,12 @@ import EventsList from '../../components/EventsList'
 import { useLoaderData } from 'react-router-dom'
 
 function Events() {
-    const events = useLoaderData()
+    const data = useLoaderData()
+
+    // if (data.isError) {
+    //     return <p>{data.message}</p>
+    // }
+    const events = data.events
 
     return (
         <>
@@ -15,10 +20,10 @@ export async function loader() {
     const response = await fetch('http://localhost:8080/events')
 
     if (!response.ok) {
-        // handle error
+        // return { isError: true, message: 'could not load events' }
+        throw { message: 'could not load events' }
     } else {
-        const resData = await response.json()
-        return resData.events
+        return response
     }
 }
 
