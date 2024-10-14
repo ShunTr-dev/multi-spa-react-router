@@ -1,8 +1,8 @@
-import { Form, json, redirect, useActionData, useNavigate, useNavigation } from 'react-router-dom'
+import { Form, useNavigate, useNavigation, useActionData, json, redirect } from 'react-router-dom'
 
 import classes from './EventForm.module.css'
 
-export default function EventForm({ method, event }) {
+function EventForm({ method, event }) {
     const data = useActionData()
     const navigate = useNavigate()
     const navigation = useNavigation()
@@ -48,11 +48,13 @@ export default function EventForm({ method, event }) {
                 <button type="button" onClick={cancelHandler} disabled={isSubmitting}>
                     Cancel
                 </button>
-                <button disabled={isSubmitting}>{isSubmitting ? 'Submitting..' : 'Save'}</button>
+                <button disabled={isSubmitting}>{isSubmitting ? 'Submitting...' : 'Save'}</button>
             </div>
         </Form>
     )
 }
+
+export default EventForm
 
 export async function action({ request, params }) {
     const method = request.method
@@ -60,15 +62,16 @@ export async function action({ request, params }) {
 
     const eventData = {
         title: data.get('title'),
-        description: data.get('description'),
         image: data.get('image'),
         date: data.get('date'),
+        description: data.get('description'),
     }
 
     let url = 'http://localhost:8080/events'
 
     if (method === 'PATCH') {
-        url = 'http://localhost:8080/events/' + params.eventId
+        const eventId = params.eventId
+        url = 'http://localhost:8080/events/' + eventId
     }
 
     const response = await fetch(url, {
@@ -84,7 +87,7 @@ export async function action({ request, params }) {
     }
 
     if (!response.ok) {
-        throw json({ message: 'Could not save event' }, { status: 500 })
+        throw json({ message: 'Could not save event.' }, { status: 500 })
     }
 
     return redirect('/events')
